@@ -9,6 +9,7 @@
     }
   },
   "profiles": {
+    // Deze bestaat misschien, maar het wordt niet gebruikt want HTTP-verbindingen worden direct doorgeschakeld naar HTTPS
     "http": {
       "commandName": "Project",
       "dotnetRunMessages": true,
