@@ -1,9 +1,26 @@
+using csharp_groep31.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// DbContext registreren
+builder.Services.AddDbContext<ZooContext>(options =>
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("ZooDb")
+    )
+);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
+// Hiermee wordt de database automatisch gemigreerd zodat we niet steeds in console hoeven te migreren
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ZooContext>();
+    db.Database.Migrate();
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -13,7 +30,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+app.UseHttpsRedirection(); // We gebruiken HTTPS i.p.v. HTTP
 app.UseStaticFiles();
 
 app.UseRouting();
