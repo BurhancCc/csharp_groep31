@@ -43,17 +43,66 @@ namespace csharp_groep31.Data
             };
             modelBuilder.Entity<Category>().HasData(categories);
 
-            // Ik maak alleen heel simpele enclosures
+            Random random = new Random(42);
+
+            // Ik maak alleen heel simpele enclosures. Geen HabitatType want straks heb je Aquatic Desert das niet logsich
             var enclosures = new List<Enclosure>
             {
-                new Enclosure { Id = 1, Name = "Agressive land animal enclosure" },
-                new Enclosure { Id = 2, Name = "Non-agressive land animal enclosure" },
-                new Enclosure { Id = 3, Name = "Agressive ambhibious animal enclosure" },
-                new Enclosure { Id = 4, Name = "Non-agressive ambhibious animal enclosure" },
-                new Enclosure { Id = 5, Name = "Agressive flying animal enclosure" },
-                new Enclosure { Id = 6, Name = "Non-agressive flying animal enclosure" },
-                new Enclosure { Id = 7, Name = "Agressive sea animal enclosure"},
-                new Enclosure { Id = 8, Name = "Non-agressive sea animal enclosure" },
+                new Enclosure
+                {
+                    Id = 1,
+                    Name = "Agressive land animal enclosure",
+                    SecurityLevel = SecurityLevel.High,
+                    Size = random.Next(500, 2000),
+                },
+                new Enclosure
+                {
+                    Id = 2,
+                    Name = "Non-agressive land animal enclosure",
+                    SecurityLevel = SecurityLevel.Medium,
+                    Size = random.Next(500, 2000),
+                },
+                new Enclosure
+                {
+                    Id = 3,
+                    Name = "Agressive ambhibious animal enclosure",
+                    SecurityLevel = SecurityLevel.High,
+                    Size = random.Next(500, 2000),
+                },
+                new Enclosure
+                {
+                    Id = 4,
+                    Name = "Non-agressive ambhibious animal enclosure",
+                    SecurityLevel = SecurityLevel.Low,
+                    Size = random.Next(500, 2000),
+                },
+                new Enclosure
+                {
+                    Id = 5,
+                    Name = "Agressive flying animal enclosure",
+                    SecurityLevel = SecurityLevel.Medium,
+                    Size = random.Next(500, 2000),
+                },
+                new Enclosure
+                {
+                    Id = 6,
+                    Name = "Non-agressive flying animal enclosure",
+                    SecurityLevel = SecurityLevel.Medium,
+                    Size = random.Next(500, 2000),
+                },
+                new Enclosure
+                {
+                    Id = 7,
+                    Name = "Agressive sea animal enclosure",
+                    SecurityLevel = SecurityLevel.High,
+                    Size = random.Next(500, 2000),
+                },
+                new Enclosure {
+                    Id = 8,
+                    Name = "Non-agressive sea animal enclosure",
+                    SecurityLevel = SecurityLevel.Medium,
+                    Size = random.Next(500, 2000),
+                },
             };
             modelBuilder.Entity<Enclosure>().HasData(enclosures);
 
@@ -82,7 +131,7 @@ namespace csharp_groep31.Data
 
             var species = speciesMap.Keys.ToList(); // Niet DRY
 
-
+            // Seeden met een faker
             var faker = new Faker<Animal>("nl")
                 .RuleFor(animal => animal.Id, fake => fake.IndexFaker + 1)
                 .RuleFor(animal => animal.Name, fake => fake.Name.FirstName())
