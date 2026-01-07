@@ -1,5 +1,6 @@
 using csharp_groep31.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,13 @@ builder.Services.AddDbContext<ZooContext>(options =>
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Dit is nodig voor de API zodat hij niet in een ondeindige loop komt bij ophalen
+builder.Services.AddControllersWithViews()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    });
 
 var app = builder.Build();
 
@@ -40,5 +48,8 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+// Voor de API
+app.MapControllers();
 
 app.Run();
