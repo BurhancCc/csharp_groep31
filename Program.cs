@@ -4,6 +4,12 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Voor Swagger documentatie
+builder.Services.AddControllers();
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 // DbContext registreren
 builder.Services.AddDbContext<ZooContext>(options =>
     options.UseSqlServer(
@@ -22,6 +28,13 @@ builder.Services.AddControllersWithViews()
     });
 
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
 
 // Hiermee wordt de database automatisch gemigreerd zodat we niet steeds in console hoeven te migreren
 using (var scope = app.Services.CreateScope())
