@@ -54,6 +54,45 @@
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
+        <hr />
+        <h4>Dieren in dit verblijf</h4>
+
+        @if (Model.Animals != null && Model.Animals.Any())
+        {
+            <ul>
+                @foreach (var a in Model.Animals.OrderBy(a => a.Name))
+                {
+                    <li>
+                        @a.Name (@a.Species)
+                        <form asp-action="RemoveAnimal" method="post" style="display:inline">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="enclosureId" value="@Model.Id" />
+                            <input type="hidden" name="animalId" value="@a.Id" />
+                            <button type="submit" class="btn btn-sm btn-danger">Loskoppelen</button>
+                        </form>
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p><em>Geen dieren gekoppeld.</em></p>
+        }
+
+        <hr />
+        <h4>Bestaand dier koppelen aan dit verblijf</h4>
+
+        <form asp-action="AddAnimal" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="enclosureId" value="@Model.Id" />
+
+            <div class="form-group">
+                <label>Kies dier (zonder verblijf)</label>
+                <select class="form-control" name="animalId" asp-items="ViewBag.UnassignedAnimals"></select>
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-2">Koppelen</button>
+        </form>
     </div>
 </div>
 
@@ -62,5 +101,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

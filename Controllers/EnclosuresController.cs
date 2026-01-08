@@ -35,6 +35,7 @@ namespace csharp_groep31.Controllers
 
             var enclosure = await _context.Enclosures
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (enclosure == null)
             {
                 return NotFound();
@@ -68,18 +69,28 @@ namespace csharp_groep31.Controllers
         // GET: Enclosures/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
-            var enclosure = await _context.Enclosures.FindAsync(id);
-            if (enclosure == null)
-            {
-                return NotFound();
-            }
+            var enclosure = await _context.Enclosures
+                .Include(e => e.Animals)
+                .FirstOrDefaultAsync(e => e.Id == id);
+
+            if (enclosure == null) return NotFound();
+
+            ViewBag.UnassignedAnimals = new SelectList
+                (
+                await _context.Animals
+                    .Where(a => a.EnclosureId == null)
+                    .OrderBy(a => a.Name)
+                    .ToListAsync(),
+                "Id",
+                "Name"
+                );
+
             return View(enclosure);
         }
+
+
 
         // POST: Enclosures/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -116,6 +127,36 @@ namespace csharp_groep31.Controllers
             return View(enclosure);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddAnimal(int enclosureId, int animalId)
+        {
+            var animal = await _context.Animals.FindAsync(animalId);
+            if (animal == null) return NotFound();
+
+            animal.EnclosureId = enclosureId;
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Edit), new { id = enclosureId });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RemoveAnimal(int enclosureId, int animalId)
+        {
+            var animal = await _context.Animals.FindAsync(animalId);
+            if (animal == null) return NotFound();
+
+            if (animal.EnclosureId == enclosureId)
+            {
+                animal.EnclosureId = null;
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Edit), new { id = enclosureId });
+        }
+
+
         // GET: Enclosures/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -126,6 +167,7 @@ namespace csharp_groep31.Controllers
 
             var enclosure = await _context.Enclosures
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (enclosure == null)
             {
                 return NotFound();
@@ -140,6 +182,7 @@ namespace csharp_groep31.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var enclosure = await _context.Enclosures.FindAsync(id);
+
             if (enclosure != null)
             {
                 _context.Enclosures.Remove(enclosure);
