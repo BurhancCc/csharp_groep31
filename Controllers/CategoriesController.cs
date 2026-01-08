@@ -35,6 +35,7 @@ namespace csharp_groep31.Controllers
 
             var category = await _context.Categories
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (category == null)
             {
                 return NotFound();
@@ -68,16 +69,24 @@ namespace csharp_groep31.Controllers
         // GET: Categories/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
-            var category = await _context.Categories.FindAsync(id);
-            if (category == null)
-            {
-                return NotFound();
-            }
+            var category = await _context.Categories
+                .Include(c => c.Animals)
+                .FirstOrDefaultAsync(c => c.Id == id);
+
+            if (category == null) return NotFound();
+
+            ViewBag.UnassignedAnimals = new SelectList
+                (
+                await _context.Animals
+                    .Where(a => a.CategoryId == null)
+                    .OrderBy(a => a.Name)
+                    .ToListAsync(),
+                "Id",
+                "Name"
+                );
+
             return View(category);
         }
 
@@ -114,6 +123,35 @@ namespace csharp_groep31.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(category);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddAnimal(int categoryId, int animalId)
+        {
+            var animal = await _context.Animals.FindAsync(animalId);
+            if (animal == null) return NotFound();
+
+            animal.CategoryId = categoryId;
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Edit), new { id = categoryId });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RemoveAnimal(int categoryId, int animalId)
+        {
+            var animal = await _context.Animals.FindAsync(animalId);
+            if (animal == null) return NotFound();
+
+            if (animal.CategoryId == categoryId)
+            {
+                animal.CategoryId = null;
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Edit), new { id = categoryId });
         }
 
         // GET: Categories/Delete/5
