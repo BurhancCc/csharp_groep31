@@ -1,7 +1,25 @@
 ﻿@model IEnumerable<csharp_groep31.Models.Enclosure>
+@using csharp_groep31.Enums
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Enclosures";
+
+    var qs = Context.Request.Query;
+    string name = qs["name"];
+    string climate = qs["climate"];
+    string habitatType = qs["habitatType"];
+    string securityLevel = qs["securityLevel"];
+    string sortBy = qs["sortBy"];
+    bool desc = false;
+    bool.TryParse(qs["desc"], out desc);
+    bool NextDesc(string key)
+    {
+        if (string.Equals(sortBy, key, StringComparison.OrdinalIgnoreCase))
+        {
+            return !desc;
+        }
+        return false;
+    }
 }
 
 <h1>Enclosures</h1>
@@ -9,51 +27,137 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+<form method="get" style="display:flex; gap:12px; align-items:end; flex-wrap:wrap; margin-bottom:16px;">
+    <div>
+        <label for="name">Name</label><br />
+        <input id="name" name="name" value="@name" class="form-control" />
+    </div>
+
+    <div>
+        <label for="climate">Climate</label><br />
+        <select id="climate" name="climate" class="form-control">
+            <option value="">(all)</option>
+            @foreach (var v in Enum.GetValues(typeof(Climate)).Cast<Climate>())
+            {
+                <option value="@v" selected="@(climate == v.ToString())">@v</option>
+            }
+        </select>
+    </div>
+
+    <div>
+        <label for="habitatType">HabitatType</label><br />
+        <select id="habitatType" name="habitatType" class="form-control">
+            <option value="">(all)</option>
+            @foreach (var v in Enum.GetValues(typeof(HabitatType)).Cast<HabitatType>())
+            {
+                <option value="@v" selected="@(habitatType == v.ToString())">@v</option>
+            }
+        </select>
+    </div>
+
+    <div>
+        <label for="securityLevel">SecurityLevel</label><br />
+        <select id="securityLevel" name="securityLevel" class="form-control">
+            <option value="">(all)</option>
+            @foreach (var v in Enum.GetValues(typeof(SecurityLevel)).Cast<SecurityLevel>())
+            {
+                <option value="@v" selected="@(securityLevel == v.ToString())">@v</option>
+            }
+        </select>
+    </div>
+
+    <input type="hidden" name="sortBy" value="@sortBy" />
+    <input type="hidden" name="desc" value="@desc" />
+
+    <div>
+        <button type="submit" class="btn btn-primary">Filter</button>
+        <a class="btn btn-secondary" asp-action="Index">Reset</a>
+    </div>
+</form>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                <a asp-action="Index"
+                   asp-route-name="@name"
+                   asp-route-climate="@climate"
+                   asp-route-habitatType="@habitatType"
+                   asp-route-securityLevel="@securityLevel"
+                   asp-route-sortBy="name"
+                   asp-route-desc="@NextDesc("name")">
+                    Name
+                </a>
             </th>
+
             <th>
-                @Html.DisplayNameFor(model => model.Climate)
+                <a asp-action="Index"
+                   asp-route-name="@name"
+                   asp-route-climate="@climate"
+                   asp-route-habitatType="@habitatType"
+                   asp-route-securityLevel="@securityLevel"
+                   asp-route-sortBy="climate"
+                   asp-route-desc="@NextDesc("climate")">
+                    Climate
+                </a>
             </th>
+
             <th>
-                @Html.DisplayNameFor(model => model.HabitatType)
+                <a asp-action="Index"
+                   asp-route-name="@name"
+                   asp-route-climate="@climate"
+                   asp-route-habitatType="@habitatType"
+                   asp-route-securityLevel="@securityLevel"
+                   asp-route-sortBy="habitat"
+                   asp-route-desc="@NextDesc("habitat")">
+                    HabitatType
+                </a>
             </th>
+
             <th>
-                @Html.DisplayNameFor(model => model.SecurityLevel)
+                <a asp-action="Index"
+                   asp-route-name="@name"
+                   asp-route-climate="@climate"
+                   asp-route-habitatType="@habitatType"
+                   asp-route-securityLevel="@securityLevel"
+                   asp-route-sortBy="security"
+                   asp-route-desc="@NextDesc("security")">
+                    SecurityLevel
+                </a>
             </th>
+
             <th>
-                @Html.DisplayNameFor(model => model.Size)
+                <a asp-action="Index"
+                   asp-route-name="@name"
+                   asp-route-climate="@climate"
+                   asp-route-habitatType="@habitatType"
+                   asp-route-securityLevel="@securityLevel"
+                   asp-route-sortBy="size"
+                   asp-route-desc="@NextDesc("size")">
+                    Size
+                </a>
             </th>
+
             <th></th>
         </tr>
     </thead>
+
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Climate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HabitatType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SecurityLevel)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Size)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Climate</td>
+                <td>@item.HabitatType</td>
+                <td>@item.SecurityLevel</td>
+                <td>@item.Size</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
