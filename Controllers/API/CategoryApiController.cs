@@ -1,5 +1,6 @@
 ﻿using csharp_groep31.Data;
 using csharp_groep31.Models;
+using csharp_groep31.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,10 +11,12 @@ namespace csharp_groep31.Controllers.Api
     public class CategoryApiController : ControllerBase
     {
         private readonly ZooContext _context;
+        private readonly ICategoryQueryService _categoryQuery;
 
-        public CategoryApiController(ZooContext context)
+        public CategoryApiController(ZooContext context, ICategoryQueryService categoryQuery)
         {
             _context = context;
+            _categoryQuery = categoryQuery;
         }
 
         // GET alle categorieën
@@ -88,6 +91,14 @@ namespace csharp_groep31.Controllers.Api
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        // GET /api/categories?name={string name}&desc={bool desc}
+        [HttpGet("search")]
+        public async Task<ActionResult> Search([FromQuery] string? name, [FromQuery] bool desc = false)
+        {
+            var categories = await _categoryQuery.SearchCategoriesAsync(name, desc);
+            return Ok(categories);
         }
     }
 }

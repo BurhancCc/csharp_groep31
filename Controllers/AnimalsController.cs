@@ -7,23 +7,26 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using csharp_groep31.Data;
 using csharp_groep31.Models;
+using csharp_groep31.Services.Interfaces;
 
 namespace csharp_groep31.Controllers
 {
     public class AnimalsController : Controller
     {
         private readonly ZooContext _context;
+        private readonly IAnimalQueryService _animalQuery;
 
-        public AnimalsController(ZooContext context)
+        public AnimalsController(ZooContext context, IAnimalQueryService animalQuery)
         {
             _context = context;
+            _animalQuery = animalQuery;
         }
 
         // GET: Animals
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? species, int? categoryId, int? enclosureId, string? name, string? sortBy, bool desc = false)
         {
-            var zooContext = _context.Animals.Include(a => a.Category).Include(a => a.Enclosure);
-            return View(await zooContext.ToListAsync());
+            var animals = await _animalQuery.SearchAnimalsAsync(species, categoryId, enclosureId, name, sortBy, desc);
+            return View(animals);
         }
 
         // GET: Animals/Details/5
@@ -165,6 +168,12 @@ namespace csharp_groep31.Controllers
         private bool AnimalExists(int id)
         {
             return _context.Animals.Any(e => e.Id == id);
+        }
+        // Filter
+        public async Task<IActionResult> ByEnclosure(int? categoryId = null)
+        {
+            var result = await _animalQuery.GroupAnimalsByEnclosureAsync(categoryId);
+            return View(result);
         }
     }
 }

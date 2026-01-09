@@ -1,28 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using csharp_groep31.Data;
+using csharp_groep31.Models;
+using csharp_groep31.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using csharp_groep31.Data;
-using csharp_groep31.Models;
 
 namespace csharp_groep31.Controllers
 {
     public class CategoriesController : Controller
     {
         private readonly ZooContext _context;
+        private readonly ICategoryQueryService _categoryQuery;
 
-        public CategoriesController(ZooContext context)
+        public CategoriesController(ZooContext context, ICategoryQueryService categoryQuery)
         {
             _context = context;
+            _categoryQuery = categoryQuery;
         }
 
         // GET: Categories
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? name, bool desc = false)
         {
-            return View(await _context.Categories.ToListAsync());
+            var categories = await _categoryQuery.SearchCategoriesAsync(name, desc);
+            return View(categories);
         }
 
         // GET: Categories/Details/5

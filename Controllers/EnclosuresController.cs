@@ -1,28 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using csharp_groep31.Data;
 using csharp_groep31.Models;
+using csharp_groep31.Services.Interfaces;
 
 namespace csharp_groep31.Controllers
 {
     public class EnclosuresController : Controller
     {
         private readonly ZooContext _context;
+        private readonly IEnclosureQueryService _enclosureQuery;
 
-        public EnclosuresController(ZooContext context)
+        public EnclosuresController(ZooContext context, IEnclosureQueryService enclosureQuery)
         {
             _context = context;
+            _enclosureQuery = enclosureQuery;
         }
 
         // GET: Enclosures
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index
+            (
+            string? name,
+            string? climate,
+            string? habitatType,
+            string? securityLevel,
+            string? sortBy,
+            bool desc = false
+            )
         {
-            return View(await _context.Enclosures.ToListAsync());
+            var result = await _enclosureQuery.SearchAsync(name, climate, habitatType, securityLevel, sortBy, desc);
+            return View(result);
         }
 
         // GET: Enclosures/Details/5

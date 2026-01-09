@@ -2,6 +2,7 @@
 using csharp_groep31.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using csharp_groep31.Services.Interfaces;
 
 namespace csharp_groep31.Controllers.Api
 {
@@ -10,10 +11,12 @@ namespace csharp_groep31.Controllers.Api
     public class AnimalApiController : ControllerBase
     {
         private readonly ZooContext _context;
+        private readonly IAnimalQueryService _animalQuery;
 
-        public AnimalApiController(ZooContext context)
+        public AnimalApiController(ZooContext context, IAnimalQueryService animalQuery)
         {
             _context = context;
+            _animalQuery = animalQuery;
         }
 
         // GET alle dieren
@@ -90,6 +93,29 @@ namespace csharp_groep31.Controllers.Api
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        // GET /api/animals?{params}
+        [HttpGet("search")]
+        public async Task<ActionResult> Search
+            (
+            [FromQuery] string? species,
+            [FromQuery] int? categoryId,
+            [FromQuery] int? enclosureId,
+            [FromQuery] string? name,
+            [FromQuery] string? sortBy,
+            [FromQuery] bool desc = false
+            )
+        {
+            var animals = await _animalQuery.SearchAnimalsAsync(species, categoryId, enclosureId, name, sortBy, desc);
+            return Ok(animals);
+        }
+
+        [HttpGet("group-by-enclosure")]
+        public async Task<ActionResult> GroupByEnclosure([FromQuery] int? categoryId = null)
+        {
+            var result = await _animalQuery.GroupAnimalsByEnclosureAsync(categoryId);
+            return Ok(result);
         }
     }
 }

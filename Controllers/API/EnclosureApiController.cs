@@ -2,6 +2,7 @@
 using csharp_groep31.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using csharp_groep31.Services.Interfaces;
 
 namespace csharp_groep31.Controllers.Api
 {
@@ -10,10 +11,12 @@ namespace csharp_groep31.Controllers.Api
     public class EnclosureApiController : ControllerBase
     {
         private readonly ZooContext _context;
+        private readonly IEnclosureQueryService _enclosureQuery;
 
-        public EnclosureApiController(ZooContext context)
+        public EnclosureApiController(ZooContext context, IEnclosureQueryService enclosureQuery)
         {
             _context = context;
+            _enclosureQuery = enclosureQuery;
         }
 
         // GET alle verblijven
@@ -88,6 +91,22 @@ namespace csharp_groep31.Controllers.Api
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        // GET /api/enclosures?{params}
+        [HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<Enclosure>>> Get
+            (
+            [FromQuery] string? name,
+            [FromQuery] string? climate,
+            [FromQuery] string? habitatType,
+            [FromQuery] string? securityLevel,
+            [FromQuery] string? sortBy,
+            [FromQuery] bool desc = false
+            )
+        {
+            var result = await _enclosureQuery.SearchAsync(name, climate, habitatType, securityLevel, sortBy, desc);
+            return Ok(result);
         }
     }
 }
