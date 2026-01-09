@@ -1,7 +1,18 @@
 ﻿@model IEnumerable<csharp_groep31.Models.Animal>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Animals";
+
+    var qs = Context.Request.Query;
+
+    string species = qs["species"];
+    string name = qs["name"];
+    string categoryId = qs["categoryId"];
+    string enclosureId = qs["enclosureId"];
+    string sortBy = qs["sortBy"];
+    bool desc = false;
+    bool.TryParse(qs["desc"], out desc);
+    bool NextDesc(string column) => sortBy == column ? !desc : false;
 }
 
 <h1>Animals</h1>
@@ -9,81 +20,179 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+<form method="get" class="mb-3" style="display:flex; gap:12px; flex-wrap:wrap; align-items:end;">
+    <div>
+        <label for="species">Species</label><br />
+        <input id="species" name="species" value="@species" class="form-control" />
+    </div>
+
+    <div>
+        <label for="name">Name</label><br />
+        <input id="name" name="name" value="@name" class="form-control" />
+    </div>
+
+    <div>
+        <label for="categoryId">CategoryId</label><br />
+        <input id="categoryId" name="categoryId" value="@categoryId" class="form-control" />
+    </div>
+
+    <div>
+        <label for="enclosureId">EnclosureId</label><br />
+        <input id="enclosureId" name="enclosureId" value="@enclosureId" class="form-control" />
+    </div>
+
+    <input type="hidden" name="sortBy" value="@sortBy" />
+    <input type="hidden" name="desc" value="@desc" />
+
+    <div>
+        <button type="submit" class="btn btn-primary">Filter</button>
+        <a class="btn btn-secondary" asp-action="Index">Reset</a>
+    </div>
+</form>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                <a asp-action="Index"
+                   asp-route-species="@species"
+                   asp-route-name="@name"
+                   asp-route-categoryId="@categoryId"
+                   asp-route-enclosureId="@enclosureId"
+                   asp-route-sortBy="name"
+                   asp-route-desc="@NextDesc("name")">
+                    @Html.DisplayNameFor(m => m.First().Name)
+                </a>
             </th>
+
             <th>
-                @Html.DisplayNameFor(model => model.Species)
+                <a asp-action="Index"
+                   asp-route-species="@species"
+                   asp-route-name="@name"
+                   asp-route-categoryId="@categoryId"
+                   asp-route-enclosureId="@enclosureId"
+                   asp-route-sortBy="species"
+                   asp-route-desc="@NextDesc("species")">
+                    @Html.DisplayNameFor(m => m.First().Species)
+                </a>
             </th>
+
             <th>
-                @Html.DisplayNameFor(model => model.Category)
+                <a asp-action="Index"
+                   asp-route-species="@species"
+                   asp-route-name="@name"
+                   asp-route-categoryId="@categoryId"
+                   asp-route-enclosureId="@enclosureId"
+                   asp-route-sortBy="size"
+                   asp-route-desc="@NextDesc("size")">
+                    @Html.DisplayNameFor(m => m.First().Size)
+                </a>
             </th>
+
             <th>
-                @Html.DisplayNameFor(model => model.Size)
+                <a asp-action="Index"
+                   asp-route-species="@species"
+                   asp-route-name="@name"
+                   asp-route-categoryId="@categoryId"
+                   asp-route-enclosureId="@enclosureId"
+                   asp-route-sortBy="category"
+                   asp-route-desc="@NextDesc("category")">
+                    Category
+                </a>
             </th>
+
             <th>
-                @Html.DisplayNameFor(model => model.DietaryClass)
+                <a asp-action="Index"
+                   asp-route-species="@species"
+                   asp-route-name="@name"
+                   asp-route-categoryId="@categoryId"
+                   asp-route-enclosureId="@enclosureId"
+                   asp-route-sortBy="enclosure"
+                   asp-route-desc="@NextDesc("enclosure")">
+                    Enclosure
+                </a>
             </th>
+
             <th>
-                @Html.DisplayNameFor(model => model.ActivityPattern)
+                <a asp-action="Index"
+                   asp-route-species="@species"
+                   asp-route-name="@name"
+                   asp-route-categoryId="@categoryId"
+                   asp-route-enclosureId="@enclosureId"
+                   asp-route-sortBy="dietaryclass"
+                   asp-route-desc="@NextDesc("dietaryclass")">
+                    DietaryClass
+                </a>
             </th>
+
             <th>
-                @Html.DisplayNameFor(model => model.Prey)
+                <a asp-action="Index"
+                   asp-route-species="@species"
+                   asp-route-name="@name"
+                   asp-route-categoryId="@categoryId"
+                   asp-route-enclosureId="@enclosureId"
+                   asp-route-sortBy="activitypattern"
+                   asp-route-desc="@NextDesc("activitypattern")">
+                    ActivityPattern
+                </a>
             </th>
+
+            <th>Prey</th>
+
             <th>
-                @Html.DisplayNameFor(model => model.Enclosure)
+                <a asp-action="Index"
+                   asp-route-species="@species"
+                   asp-route-name="@name"
+                   asp-route-categoryId="@categoryId"
+                   asp-route-enclosureId="@enclosureId"
+                   asp-route-sortBy="space"
+                   asp-route-desc="@NextDesc("space")">
+                    @Html.DisplayNameFor(m => m.First().SpaceRequirement)
+                </a>
             </th>
+
             <th>
-                @Html.DisplayNameFor(model => model.SpaceRequirement)
+                <a asp-action="Index"
+                   asp-route-species="@species"
+                   asp-route-name="@name"
+                   asp-route-categoryId="@categoryId"
+                   asp-route-enclosureId="@enclosureId"
+                   asp-route-sortBy="security"
+                   asp-route-desc="@NextDesc("security")">
+                    @Html.DisplayNameFor(m => m.First().SecurityRequirement)
+                </a>
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SecurityRequirement)
-            </th>
+
             <th></th>
         </tr>
     </thead>
+
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Species)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Size)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DietaryClass)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ActivityPattern)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Prey)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Enclosure.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SpaceRequirement)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SecurityRequirement)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Species</td>
+                <td>@item.Size</td>
+                <td>@(item.Category?.Name ?? "-")</td>
+                <td>@(item.Enclosure?.Name ?? "-")</td>
+                <td>@item.DietaryClass</td>
+                <td>@item.ActivityPattern</td>
+
+                <td>
+                    @(item.Prey == null || item.Prey.Count == 0 ? "-" : string.Join(", ", item.Prey))
+                </td>
+
+                <td>@item.SpaceRequirement</td>
+                <td>@item.SecurityRequirement</td>
+
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
