@@ -17,6 +17,7 @@ builder.Services.AddSwaggerGen();
 // Services registreren
 builder.Services.AddScoped<IAnimalService, AnimalService>();
 builder.Services.AddScoped<IEnclosureService, EnclosureService>();
+builder.Services.AddScoped<IZooService, ZooService>();
 
 // DbContext registreren
 builder.Services.AddDbContext<ZooContext>(options =>
