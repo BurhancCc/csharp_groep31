@@ -2,6 +2,15 @@
 
 @{
     ViewData["Title"] = "Details";
+
+    // Data van de action controller
+    var actionTitle = TempData["ActionTitle"] as string;
+    var actionSuccess = TempData["ActionSuccess"] as bool?;
+    var actionMessagesRaw = TempData["ActionMessages"] as string;
+
+    var actionMessages = string.IsNullOrWhiteSpace(actionMessagesRaw)
+        ? new List<string>()
+        : actionMessagesRaw.Split("||").ToList();
 }
 
 <h1>Details</h1>
@@ -10,38 +19,64 @@
     <h4>Enclosure</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Climate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Climate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.HabitatType)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.HabitatType)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SecurityLevel)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SecurityLevel)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Size)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Size)
-        </dd>
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Name)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Name)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Climate)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Climate)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.HabitatType)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.HabitatType)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.SecurityLevel)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.SecurityLevel)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Size)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Size)</dd>
     </dl>
 </div>
+
+<hr />
+
+<h4>Actions</h4>
+
+<div class="d-flex gap-2 flex-wrap">
+    <form asp-controller="EnclosureActions" asp-action="Sunrise" asp-route-id="@Model.Id" method="post">
+        @Html.AntiForgeryToken()
+        <button type="submit" class="btn btn-primary">Sunrise</button>
+    </form>
+
+    <form asp-controller="EnclosureActions" asp-action="Sunset" asp-route-id="@Model.Id" method="post">
+        @Html.AntiForgeryToken()
+        <button type="submit" class="btn btn-primary">Sunset</button>
+    </form>
+
+    <form asp-controller="EnclosureActions" asp-action="FeedingTime" asp-route-id="@Model.Id" method="post">
+        @Html.AntiForgeryToken()
+        <button type="submit" class="btn btn-warning">FeedingTime</button>
+    </form>
+
+    <form asp-controller="EnclosureActions" asp-action="CheckConstraints" asp-route-id="@Model.Id" method="post">
+        @Html.AntiForgeryToken()
+        <button type="submit" class="btn btn-success">CheckConstraints</button>
+    </form>
+</div>
+
+@if (!string.IsNullOrWhiteSpace(actionTitle))
+{
+    <div class="mt-4 alert @(actionSuccess == true ? "alert-success" : "alert-danger")">
+        <strong>@actionTitle</strong>
+        <ul class="mb-0">
+            @foreach (var msg in actionMessages)
+            {
+                <li>@msg</li>
+            }
+        </ul>
+    </div>
+}
+
+<hr />
+
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>

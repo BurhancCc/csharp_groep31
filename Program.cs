@@ -1,6 +1,9 @@
 using csharp_groep31.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
+using csharp_groep31.Services.Interfaces;
+using csharp_groep31.Services;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +12,12 @@ builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+
+// Services registreren
+builder.Services.AddScoped<IAnimalService, AnimalService>();
+builder.Services.AddScoped<IEnclosureService, EnclosureService>();
+builder.Services.AddScoped<IZooService, ZooService>();
 
 // DbContext registreren
 builder.Services.AddDbContext<ZooContext>(options =>

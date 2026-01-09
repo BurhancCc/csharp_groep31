@@ -108,25 +108,25 @@ namespace csharp_groep31.Data
 
             // Bogus kan geen diernamen verzinnen dus doe ik het maar.
             // Moet een paar mappers aanmaken zodat bijvoorbeeld leeuwen niet als reptiel worden opgeslagen.
-            var speciesMap = new Dictionary<string, (Size Size, int CategoryId, int EnclosureId)>
+            var speciesMap = new Dictionary<string, (Size Size, double SpaceRequirement, SecurityLevel SecurityRequirement, int CategoryId, int EnclosureId)>
             {
-                { "Lion", (Size.Large, 1, 1) },
-                { "Elephant", (Size.Large, 1, 2) },
-                { "Zebra", (Size.Medium, 1, 2) },
-                { "Giraffe", (Size.Large, 1, 2) },
-                { "Bonobo", (Size.Small, 1, 2) },
-                { "Otter", (Size.VerySmall, 1 ,4) },
-                { "Bat", (Size.VerySmall, 1, 5) },
-                { "Parrot", (Size.VerySmall, 2, 6) },
-                { "Eagle", (Size.Medium, 2, 5 ) },
-                { "Owl", (Size.VerySmall, 2, 6) },
-                { "Cobra", (Size.Medium , 3, 1 ) },
-                { "Iguana", (Size.VerySmall, 3, 2 ) },
-                { "Crocodile", (Size.Large, 3, 3) },
-                { "Dolphin", (Size.Large, 1, 8) },
-                { "Great White Shark", (Size.VeryLarge, 4, 7)},
-                { "Penguin", (Size.VerySmall, 2, 4) },
-                { "Polar Bear", (Size.Large, 1, 3) },
+                { "Lion", (Size.Large, 8.0, SecurityLevel.High, 1, 1) },
+                { "Elephant", (Size.Large, 20.0, SecurityLevel.Medium, 1, 2) },
+                { "Zebra", (Size.Medium, 6.0, SecurityLevel.Low, 1, 2) },
+                { "Giraffe", (Size.Large, 12.0, SecurityLevel.Medium, 1, 2) },
+                { "Bonobo", (Size.Small, 3.0, SecurityLevel.Medium, 1, 2) },
+                { "Otter", (Size.VerySmall, 1.5, SecurityLevel.Medium, 1, 4) },
+                { "Bat", (Size.VerySmall, 0.8, SecurityLevel.Low, 1, 5) },
+                { "Parrot", (Size.VerySmall, 0.8, SecurityLevel.Low, 2, 6) },
+                { "Eagle", (Size.Medium, 3.0, SecurityLevel.Medium, 2, 5) },
+                { "Owl", (Size.VerySmall, 1.0, SecurityLevel.Low, 2, 6) },
+                { "Cobra", (Size.Medium, 2.5, SecurityLevel.High, 3, 1) },
+                { "Iguana", (Size.VerySmall, 1.0, SecurityLevel.Medium, 3, 2) },
+                { "Crocodile", (Size.Large, 10.0, SecurityLevel.High, 3, 3) },
+                { "Dolphin", (Size.Large, 12.0, SecurityLevel.High, 1, 8) },
+                { "Great White Shark", (Size.VeryLarge, 25.0, SecurityLevel.High, 4, 7) },
+                { "Penguin", (Size.VerySmall, 1.2, SecurityLevel.Low, 2, 4) },
+                { "Polar Bear", (Size.Large, 12.0, SecurityLevel.High, 1, 3) },
             };
 
             var species = speciesMap.Keys.ToList(); // Niet DRY
@@ -137,8 +137,12 @@ namespace csharp_groep31.Data
                 .RuleFor(animal => animal.Name, fake => fake.Name.FirstName())
                 .RuleFor(animal => animal.Species, fake => fake.PickRandom(species))
                 .RuleFor(animal => animal.Size, (fake, animal) => speciesMap[animal.Species].Size)
+                .RuleFor(animal => animal.SpaceRequirement, (fake, animal) => speciesMap[animal.Species].SpaceRequirement)
+                .RuleFor(animal => animal.SecurityRequirement, (fake, animal) => speciesMap[animal.Species].SecurityRequirement)
                 .RuleFor(animal => animal.CategoryId, (fake, animal) => speciesMap[animal.Species].CategoryId)
-                .RuleFor(animal => animal.EnclosureId, (fake, animal) => speciesMap[animal.Species].EnclosureId);
+                .RuleFor(animal => animal.EnclosureId, (fake, animal) => speciesMap[animal.Species].EnclosureId)
+                .RuleFor(animal => animal.DietaryClass, fake => fake.PickRandom<DietaryClass>())
+                .RuleFor(animal => animal.ActivityPattern, fake => fake.PickRandom<ActivityPattern>());
 
             var animals = faker.Generate(20);
             modelBuilder.Entity<Animal>().HasData(animals);

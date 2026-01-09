@@ -12,7 +12,7 @@ using csharp_groep31.Data;
 namespace csharp_groep31.Migrations
 {
     [DbContext(typeof(ZooContext))]
-    [Migration("20251231152556_Groep31")]
+    [Migration("20260108205840_Groep31")]
     partial class Groep31
     {
         /// <inheritdoc />
@@ -77,262 +77,262 @@ namespace csharp_groep31.Migrations
                         new
                         {
                             Id = 1,
-                            ActivityPattern = 0,
-                            CategoryId = 3,
+                            ActivityPattern = 1,
+                            CategoryId = 2,
                             DietaryClass = 0,
-                            EnclosureId = 3,
-                            Name = "Milan",
+                            EnclosureId = 6,
+                            Name = "Thijs",
                             SecurityRequirement = 0,
-                            Size = 4,
-                            SpaceRequirement = 0.0,
-                            Species = "Crocodile"
+                            Size = 1,
+                            SpaceRequirement = 0.80000000000000004,
+                            Species = "Parrot"
                         },
                         new
                         {
                             Id = 2,
-                            ActivityPattern = 0,
+                            ActivityPattern = 2,
                             CategoryId = 1,
                             DietaryClass = 0,
                             EnclosureId = 3,
-                            Name = "Max",
-                            SecurityRequirement = 0,
+                            Name = "Jan",
+                            SecurityRequirement = 2,
                             Size = 4,
-                            SpaceRequirement = 0.0,
+                            SpaceRequirement = 12.0,
                             Species = "Polar Bear"
                         },
                         new
                         {
                             Id = 3,
-                            ActivityPattern = 0,
-                            CategoryId = 3,
-                            DietaryClass = 0,
-                            EnclosureId = 1,
-                            Name = "Kevin",
-                            SecurityRequirement = 0,
-                            Size = 3,
-                            SpaceRequirement = 0.0,
-                            Species = "Cobra"
+                            ActivityPattern = 2,
+                            CategoryId = 1,
+                            DietaryClass = 3,
+                            EnclosureId = 2,
+                            Name = "Max",
+                            SecurityRequirement = 1,
+                            Size = 4,
+                            SpaceRequirement = 12.0,
+                            Species = "Giraffe"
                         },
                         new
                         {
                             Id = 4,
                             ActivityPattern = 0,
                             CategoryId = 1,
-                            DietaryClass = 0,
-                            EnclosureId = 1,
-                            Name = "Rick",
+                            DietaryClass = 3,
+                            EnclosureId = 2,
+                            Name = "Eva",
                             SecurityRequirement = 0,
-                            Size = 4,
-                            SpaceRequirement = 0.0,
-                            Species = "Lion"
+                            Size = 3,
+                            SpaceRequirement = 6.0,
+                            Species = "Zebra"
                         },
                         new
                         {
                             Id = 5,
-                            ActivityPattern = 0,
+                            ActivityPattern = 2,
                             CategoryId = 2,
                             DietaryClass = 0,
                             EnclosureId = 6,
-                            Name = "Emma",
+                            Name = "Thomas",
                             SecurityRequirement = 0,
                             Size = 1,
-                            SpaceRequirement = 0.0,
+                            SpaceRequirement = 0.80000000000000004,
                             Species = "Parrot"
                         },
                         new
                         {
                             Id = 6,
-                            ActivityPattern = 0,
-                            CategoryId = 3,
-                            DietaryClass = 0,
-                            EnclosureId = 3,
-                            Name = "Fleur",
-                            SecurityRequirement = 0,
-                            Size = 4,
-                            SpaceRequirement = 0.0,
-                            Species = "Crocodile"
+                            ActivityPattern = 1,
+                            CategoryId = 1,
+                            DietaryClass = 1,
+                            EnclosureId = 2,
+                            Name = "Daan",
+                            SecurityRequirement = 1,
+                            Size = 2,
+                            SpaceRequirement = 3.0,
+                            Species = "Bonobo"
                         },
                         new
                         {
                             Id = 7,
-                            ActivityPattern = 0,
-                            CategoryId = 3,
-                            DietaryClass = 0,
-                            EnclosureId = 2,
-                            Name = "Max",
+                            ActivityPattern = 2,
+                            CategoryId = 2,
+                            DietaryClass = 2,
+                            EnclosureId = 6,
+                            Name = "Sanne",
                             SecurityRequirement = 0,
                             Size = 1,
-                            SpaceRequirement = 0.0,
-                            Species = "Iguana"
+                            SpaceRequirement = 1.0,
+                            Species = "Owl"
                         },
                         new
                         {
                             Id = 8,
-                            ActivityPattern = 0,
-                            CategoryId = 3,
+                            ActivityPattern = 2,
+                            CategoryId = 1,
                             DietaryClass = 0,
-                            EnclosureId = 2,
-                            Name = "Sander",
-                            SecurityRequirement = 0,
-                            Size = 1,
-                            SpaceRequirement = 0.0,
-                            Species = "Iguana"
+                            EnclosureId = 1,
+                            Name = "Thijs",
+                            SecurityRequirement = 2,
+                            Size = 4,
+                            SpaceRequirement = 8.0,
+                            Species = "Lion"
                         },
                         new
                         {
                             Id = 9,
-                            ActivityPattern = 0,
+                            ActivityPattern = 1,
                             CategoryId = 3,
-                            DietaryClass = 0,
-                            EnclosureId = 3,
-                            Name = "Kevin",
-                            SecurityRequirement = 0,
-                            Size = 4,
-                            SpaceRequirement = 0.0,
-                            Species = "Crocodile"
+                            DietaryClass = 1,
+                            EnclosureId = 2,
+                            Name = "Anouk",
+                            SecurityRequirement = 1,
+                            Size = 1,
+                            SpaceRequirement = 1.0,
+                            Species = "Iguana"
                         },
                         new
                         {
                             Id = 10,
-                            ActivityPattern = 0,
-                            CategoryId = 1,
-                            DietaryClass = 0,
-                            EnclosureId = 4,
-                            Name = "Lotte",
-                            SecurityRequirement = 0,
-                            Size = 1,
-                            SpaceRequirement = 0.0,
-                            Species = "Otter"
+                            ActivityPattern = 2,
+                            CategoryId = 3,
+                            DietaryClass = 3,
+                            EnclosureId = 3,
+                            Name = "Jayden",
+                            SecurityRequirement = 2,
+                            Size = 4,
+                            SpaceRequirement = 10.0,
+                            Species = "Crocodile"
                         },
                         new
                         {
                             Id = 11,
                             ActivityPattern = 0,
-                            CategoryId = 1,
-                            DietaryClass = 0,
-                            EnclosureId = 8,
-                            Name = "Niels",
-                            SecurityRequirement = 0,
-                            Size = 4,
-                            SpaceRequirement = 0.0,
-                            Species = "Dolphin"
+                            CategoryId = 4,
+                            DietaryClass = 1,
+                            EnclosureId = 7,
+                            Name = "Sem",
+                            SecurityRequirement = 2,
+                            Size = 5,
+                            SpaceRequirement = 25.0,
+                            Species = "Great White Shark"
                         },
                         new
                         {
                             Id = 12,
                             ActivityPattern = 0,
-                            CategoryId = 2,
-                            DietaryClass = 0,
-                            EnclosureId = 6,
-                            Name = "Jesse",
-                            SecurityRequirement = 0,
-                            Size = 1,
-                            SpaceRequirement = 0.0,
-                            Species = "Owl"
+                            CategoryId = 1,
+                            DietaryClass = 3,
+                            EnclosureId = 3,
+                            Name = "Daan",
+                            SecurityRequirement = 2,
+                            Size = 4,
+                            SpaceRequirement = 12.0,
+                            Species = "Polar Bear"
                         },
                         new
                         {
                             Id = 13,
                             ActivityPattern = 0,
                             CategoryId = 1,
-                            DietaryClass = 0,
-                            EnclosureId = 8,
-                            Name = "Rick",
-                            SecurityRequirement = 0,
+                            DietaryClass = 4,
+                            EnclosureId = 3,
+                            Name = "Bas",
+                            SecurityRequirement = 2,
                             Size = 4,
-                            SpaceRequirement = 0.0,
-                            Species = "Dolphin"
+                            SpaceRequirement = 12.0,
+                            Species = "Polar Bear"
                         },
                         new
                         {
                             Id = 14,
-                            ActivityPattern = 0,
-                            CategoryId = 1,
-                            DietaryClass = 0,
+                            ActivityPattern = 1,
+                            CategoryId = 3,
+                            DietaryClass = 3,
                             EnclosureId = 2,
-                            Name = "Kevin",
-                            SecurityRequirement = 0,
-                            Size = 2,
-                            SpaceRequirement = 0.0,
-                            Species = "Bonobo"
+                            Name = "Rick",
+                            SecurityRequirement = 1,
+                            Size = 1,
+                            SpaceRequirement = 1.0,
+                            Species = "Iguana"
                         },
                         new
                         {
                             Id = 15,
-                            ActivityPattern = 0,
-                            CategoryId = 1,
-                            DietaryClass = 0,
-                            EnclosureId = 2,
-                            Name = "Sander",
+                            ActivityPattern = 1,
+                            CategoryId = 2,
+                            DietaryClass = 1,
+                            EnclosureId = 6,
+                            Name = "Lucas",
                             SecurityRequirement = 0,
-                            Size = 4,
-                            SpaceRequirement = 0.0,
-                            Species = "Giraffe"
+                            Size = 1,
+                            SpaceRequirement = 0.80000000000000004,
+                            Species = "Parrot"
                         },
                         new
                         {
                             Id = 16,
-                            ActivityPattern = 0,
-                            CategoryId = 2,
-                            DietaryClass = 0,
-                            EnclosureId = 5,
-                            Name = "Julian",
-                            SecurityRequirement = 0,
-                            Size = 3,
-                            SpaceRequirement = 0.0,
-                            Species = "Eagle"
+                            ActivityPattern = 2,
+                            CategoryId = 3,
+                            DietaryClass = 4,
+                            EnclosureId = 3,
+                            Name = "Bram",
+                            SecurityRequirement = 2,
+                            Size = 4,
+                            SpaceRequirement = 10.0,
+                            Species = "Crocodile"
                         },
                         new
                         {
                             Id = 17,
                             ActivityPattern = 0,
-                            CategoryId = 1,
-                            DietaryClass = 0,
-                            EnclosureId = 8,
-                            Name = "Nick",
+                            CategoryId = 2,
+                            DietaryClass = 4,
+                            EnclosureId = 4,
+                            Name = "Lars",
                             SecurityRequirement = 0,
-                            Size = 4,
-                            SpaceRequirement = 0.0,
-                            Species = "Dolphin"
+                            Size = 1,
+                            SpaceRequirement = 1.2,
+                            Species = "Penguin"
                         },
                         new
                         {
                             Id = 18,
                             ActivityPattern = 0,
-                            CategoryId = 3,
-                            DietaryClass = 0,
+                            CategoryId = 1,
+                            DietaryClass = 2,
                             EnclosureId = 3,
-                            Name = "Tim",
-                            SecurityRequirement = 0,
+                            Name = "Bram",
+                            SecurityRequirement = 2,
                             Size = 4,
-                            SpaceRequirement = 0.0,
-                            Species = "Crocodile"
+                            SpaceRequirement = 12.0,
+                            Species = "Polar Bear"
                         },
                         new
                         {
                             Id = 19,
                             ActivityPattern = 0,
                             CategoryId = 1,
-                            DietaryClass = 0,
-                            EnclosureId = 1,
-                            Name = "Bram",
+                            DietaryClass = 4,
+                            EnclosureId = 5,
+                            Name = "Anne",
                             SecurityRequirement = 0,
-                            Size = 4,
-                            SpaceRequirement = 0.0,
-                            Species = "Lion"
+                            Size = 1,
+                            SpaceRequirement = 0.80000000000000004,
+                            Species = "Bat"
                         },
                         new
                         {
                             Id = 20,
-                            ActivityPattern = 0,
+                            ActivityPattern = 1,
                             CategoryId = 1,
-                            DietaryClass = 0,
-                            EnclosureId = 2,
+                            DietaryClass = 2,
+                            EnclosureId = 3,
                             Name = "Lucas",
-                            SecurityRequirement = 0,
-                            Size = 2,
-                            SpaceRequirement = 0.0,
-                            Species = "Bonobo"
+                            SecurityRequirement = 2,
+                            Size = 4,
+                            SpaceRequirement = 12.0,
+                            Species = "Polar Bear"
                         });
                 });
 

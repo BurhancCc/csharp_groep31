@@ -1,8 +1,63 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@{
+    var title = TempData["ActionTitle"] as string;
+    var raw = TempData["ActionMessages"] as string;
+    var msgs = string.IsNullOrWhiteSpace(raw) ? new List<string>() : raw.Split("||").ToList();
+    var success = TempData["ActionSuccess"] as bool?;
+}
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<h1>Zoo Dashboard</h1>
+
+@if (!string.IsNullOrWhiteSpace(title))
+{
+    <div class="mt-3 alert @(success == true ? "alert-success" : "alert-danger")">
+        <strong>@title</strong>
+        <ul class="mb-0">
+            @foreach (var m in msgs)
+            {
+                <li>@m</li>
+            }
+        </ul>
+    </div>
+}
+
+<hr />
+
+<h4>Zoo acties</h4>
+
+<div class="d-flex gap-2 flex-wrap">
+    <form asp-controller="ZooActions" asp-action="Sunrise" method="post">
+        @Html.AntiForgeryToken()
+        <button class="btn btn-primary">Sunrise</button>
+    </form>
+
+    <form asp-controller="ZooActions" asp-action="Sunset" method="post">
+        @Html.AntiForgeryToken()
+        <button class="btn btn-primary">Sunset</button>
+    </form>
+
+    <form asp-controller="ZooActions" asp-action="FeedingTime" method="post">
+        @Html.AntiForgeryToken()
+        <button class="btn btn-warning">FeedingTime</button>
+    </form>
+
+    <form asp-controller="ZooActions" asp-action="CheckConstraints" method="post">
+        @Html.AntiForgeryToken()
+        <button class="btn btn-success">CheckConstraints</button>
+    </form>
+
+    <form asp-controller="ZooActions" asp-action="AutoAssign" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="resetAll" value="false" />
+        <button class="btn btn-outline-primary">AutoAssign (keep existing)</button>
+    </form>
+
+    <form asp-controller="ZooActions" asp-action="AutoAssign" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="resetAll" value="true" />
+        <button class="btn btn-outline-danger">AutoAssign (RESET all)</button>
+    </form>
+
 </div>
