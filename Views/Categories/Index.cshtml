@@ -1,7 +1,13 @@
 ﻿@model IEnumerable<csharp_groep31.Models.Category>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Categories";
+
+    var qs = Context.Request.Query;
+    string name = qs["name"];
+    bool desc = false;
+    bool.TryParse(qs["desc"], out desc);
+    bool nextDesc = !desc;
 }
 
 <h1>Categories</h1>
@@ -9,27 +15,46 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+<form method="get" style="display:flex; gap:12px; align-items:end; flex-wrap:wrap; margin-bottom:16px;">
+    <div>
+        <label for="name">Name</label><br />
+        <input id="name" name="name" value="@name" class="form-control" />
+    </div>
+
+    <input type="hidden" name="desc" value="@desc" />
+
+    <div>
+        <button type="submit" class="btn btn-primary">Filter</button>
+        <a class="btn btn-secondary" asp-action="Index">Reset</a>
+    </div>
+</form>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                <a asp-action="Index"
+                   asp-route-name="@name"
+                   asp-route-desc="@nextDesc">
+                    Name
+                </a>
             </th>
             <th></th>
         </tr>
     </thead>
+
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
